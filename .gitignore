@@ -1,0 +1,7 @@
+temp/
+build-ClientApp-Desktop*
+*.pro.user
+.env
+composer.lock
+www/vendor/
+postgres-data/
