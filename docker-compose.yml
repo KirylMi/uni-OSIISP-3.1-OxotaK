@@ -10,7 +10,9 @@ services:
         depends_on:
             - db
         networks:
-             - default
+            - default
+        extra_hosts:
+            - "localhost:127.0.0.1"
 
     db:
         image: postgres

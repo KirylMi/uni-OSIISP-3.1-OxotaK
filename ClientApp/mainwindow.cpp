@@ -7,8 +7,8 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     qDebug()<<QSqlDatabase::drivers();
-    QSqlDatabase obj = QSqlDatabase::addDatabase("QPSQL7");
-    obj.setHostName("172.20.0.2");
+    QSqlDatabase obj = QSqlDatabase::addDatabase("QPSQL");
+    obj.setHostName("localhost");
     obj.setDatabaseName("myDb");
     obj.setUserName("postgres");
     obj.setPassword("test");
@@ -24,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
 //                QString name = q.value(0).toString();
 //                qDebug()<<"name:"<<name;
 //            }
-    QSqlQuery q2("INSERT INTO public.users (email, username, password, privilege, name) VALUES ('another222@gmail.com', 'anotherUserName2', 'password', 'admin', 'name3');");
+    QSqlQuery q2("INSERT INTO public.users (email, username, password, privilege, name) VALUES ('another22238@gmail.com', 'anotherUserName28', 'password', 'admin', 'name38');");
     //q2.exec();
 
 }
