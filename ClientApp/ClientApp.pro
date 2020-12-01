@@ -11,17 +11,27 @@ CONFIG += c++11
 
 SOURCES += \
     db.cpp \
+    loginwindow.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    models.cpp \
+    utils.cpp
 
 HEADERS += \
     db.h \
-    mainwindow.h
+    loginwindow.h \
+    mainwindow.h \
+    models.h \
+    utils.h
 
 FORMS += \
+    loginwindow.ui \
     mainwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    resources.qrc

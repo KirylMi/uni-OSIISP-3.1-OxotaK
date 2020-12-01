@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/env">
+        <file>env.json</file>
+    </qresource>
+</RCC>
