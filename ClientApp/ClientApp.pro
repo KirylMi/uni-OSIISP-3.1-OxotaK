@@ -11,6 +11,8 @@ CONFIG += c++11
 
 SOURCES += \
     db.cpp \
+    dbparser.cpp \
+    drink.cpp \
     loginwindow.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -19,6 +21,8 @@ SOURCES += \
 
 HEADERS += \
     db.h \
+    dbparser.h \
+    drink.h \
     loginwindow.h \
     mainwindow.h \
     models.h \

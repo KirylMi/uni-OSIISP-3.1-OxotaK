@@ -9,6 +9,7 @@
 #include <QSqlRecord>
 #include <QString>
 #include "models.h"
+#include "dbparser.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -23,10 +24,13 @@ public:
     MainWindow(QWidget* parent = nullptr);
     ~MainWindow();
 public slots:
-    void authorize(User);
+    void authorize(const User&);
+private slots:
+    void refresh();
 signals:
     void somethingWasPressed();
 private:
     Ui::MainWindow* ui;
+    User currentUser;
 };
 #endif // MAINWINDOW_H

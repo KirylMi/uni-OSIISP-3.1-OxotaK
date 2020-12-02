@@ -8,8 +8,7 @@ MainWindow::MainWindow(QWidget* parent)
 {
     ui->setupUi(this);
 
-    //connect(this,SIGNAL(pressedExit(User)),&DB::getInstance(),SLOT(tryLogIn(User)));
-    connect(&DB::getInstance(),SIGNAL(successfulLogin(User)),this,SLOT(authorize(User)));
+    connect(&DBParser::getInstance(),SIGNAL(successfulLogin(const User&)),this,SLOT(authorize(const User&)));
 
 }
 
@@ -18,8 +17,16 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::authorize(User)
+void MainWindow::authorize(const User &user)
 {
     this->show();
+    this->currentUser=DBParser::getInstance().getUser(user);
+    this->refresh();
     qDebug("OH YEAH MISTER CRABS");
+    qDebug()<<currentUser;
+}
+
+void MainWindow::refresh()
+{
+
 }

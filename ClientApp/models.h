@@ -12,6 +12,15 @@ struct User{
         :id(id),username(username),name(name),password(password),isActive(isActive),description(description){};
     User(const User &other)
         :id(other.id),username(other.username),name(other.name),password(other.password),isActive(other.isActive),description(other.description){};
+    User& operator = (const User&other){
+        this->id = other.id;
+        this->description=other.description;
+        this->isActive=other.isActive;
+        this->name=other.name;
+        this->password=other.password;
+        this->username=other.username;
+        return *this;
+    }
     int id;
     QString username;
     QString name;

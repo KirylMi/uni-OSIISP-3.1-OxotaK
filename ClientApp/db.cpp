@@ -1,10 +1,10 @@
 #include "db.h"
 
 
-DB& DB::getInstance(){
-    static DB obj;
-    return obj;
-}
+//DB& DB::getInstance(){
+//    static DB obj;
+//    return obj;
+//}
 
 
 
@@ -70,37 +70,16 @@ QString DB::getSchemaApproval()
     return QString('\"' + this->schema + '\"' + ".approval");
 }
 
-void DB::tryLogIn(User &user)
+QSqlQuery& DB::getUserData(const User &user)
 {
-    QSqlQuery query;
-    query.prepare("SELECT * FROM " + getSchemaUsers() + " WHERE username = :username AND password = :password");
+    QSqlQuery *query = new QSqlQuery;
+    query->prepare("SELECT * FROM " + getSchemaUsers() + " WHERE username = :username AND password = :password");
     qDebug().noquote()<<"SELECT * FROM " + getSchemaUsers()  + " WHERE username = :username AND password = :password";
-    query.bindValue(":username",user.username);
-    query.bindValue(":password",QString(QCryptographicHash::hash((user.password.toUtf8()),QCryptographicHash::Md5).toHex()));
+    query->bindValue(":username",user.username);
+    query->bindValue(":password",QString(QCryptographicHash::hash((user.password.toUtf8()),QCryptographicHash::Md5).toHex()));
 
-    if(query.exec()){
-        query.next();
-        if (!query.isValid()){
-            emit(badLogin("Such user doesn't exist :("));
-            return;
-        }
-        qDebug("Successful select of the user from the DB");
-
-        QSqlRecord record = query.record();
-
-        if (!query.value(record.indexOf("is_active")).toBool()){
-            emit(badLogin("User is not yet activated")); //tdb add list of pending activations
-            return;
-        }
-
-        user.id=query.value(record.indexOf("id")).toInt();
-        user.name=query.value(record.indexOf("name")).toString();
-        user.description = query.value(record.indexOf("description")).toString();
-        user.isActive=query.value(record.indexOf("is_active")).toBool();
-        qDebug()<<user;
-        emit(successfulLogin(user));
+    if(!query->exec()){  //tdb maybe all on the parser? No emits from DB TDB
+        emit(error("DB doesn't respond (tryLogIn function)"));
     }
-    else{
-        emit(badLogin("DB doesn't respond (tryLogIn function)"));
-    }
+    return *query;
 }

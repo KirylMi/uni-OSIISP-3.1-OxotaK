@@ -4,8 +4,11 @@
 #include <QDialog>
 #include <QAbstractButton>
 #include <QDebug>
+#include <QMessageBox>
 #include "models.h"
 #include "db.h"
+#include "dbparser.h"
+#include <QCloseEvent>
 
 namespace Ui {
 class LoginWindow;
@@ -16,11 +19,11 @@ class LoginWindow : public QDialog
     Q_OBJECT
 
 public:
-    explicit LoginWindow(QWidget *parent = nullptr);
+    LoginWindow(QWidget *parent = nullptr);
     ~LoginWindow();
 
 signals:
-    void pressedOk(User&);
+    void pressedOk(const User&);
     void pressedExit();
 
 private slots:
@@ -29,6 +32,7 @@ private slots:
 
 private:
     Ui::LoginWindow *ui;
+    void closeEvent(QCloseEvent *);
 };
 
 #endif // LOGINWINDOW_H

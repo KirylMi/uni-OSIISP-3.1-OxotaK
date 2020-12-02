@@ -17,19 +17,23 @@
 #include <QCryptographicHash>
 #include <QSqlRecord>
 #include <QSqlRecord>
+#include "dbparser.h"
 
+class DBParser;
 
 class DB : public QObject {
     Q_OBJECT
 public:
-    static DB& getInstance();
-    bool canLogIn(const QString& username, const QString& password);
-    bool canLogIn(const User& obj);
+    //friend class DBParser;
+    //static DB& getInstance();
 
-private:
+    //bool canLogIn(const QString& username, const QString& password);
+    //bool canLogIn(const User& obj);
     DB();
-    DB& operator=(const DB&);
-    DB(const DB&);
+private:
+//    DB();
+//    DB& operator=(const DB&);
+//    DB(const DB&);
 
     QSqlDatabase database;
     QVector<QString> params{"HostName","DatabaseName","UserName","Password","Port", "Schema"};
@@ -42,11 +46,12 @@ private:
     QString getSchemaApproval();
 
 signals:
-    void successfulLogin(User);
-    void badLogin(const QString&);
+    //void successfulLogin(User&);
+    //void badLogin(const QString&);
+    void error(const QString&);
 
 public slots:
-    void tryLogIn(User&);
+    QSqlQuery& getUserData(const User&);
 };
 
 #endif // DB_H

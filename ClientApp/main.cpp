@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "db.h"
 #include "loginwindow.h"
+#include "dbparser.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
@@ -8,7 +9,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 
     MainWindow mainWindow;
-    DB::getInstance();
+    DBParser::getInstance();
     LoginWindow loginWindow;
 
     loginWindow.show();
