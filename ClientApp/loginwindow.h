@@ -20,7 +20,7 @@ public:
     ~LoginWindow();
 
 signals:
-    void pressedOk(User);
+    void pressedOk(User&);
     void pressedExit();
 
 private slots:

@@ -13,6 +13,11 @@
 #include <QVector>
 #include <QSqlError>
 #include <QDebug>
+#include <QSqlQuery>
+#include <QCryptographicHash>
+#include <QSqlRecord>
+#include <QSqlRecord>
+
 
 class DB : public QObject {
     Q_OBJECT
@@ -25,15 +30,23 @@ private:
     DB();
     DB& operator=(const DB&);
     DB(const DB&);
+
     QSqlDatabase database;
-    QVector<QString> params{"HostName","DatabaseName","UserName","Password","Port"};
+    QVector<QString> params{"HostName","DatabaseName","UserName","Password","Port", "Schema"};
+
+    QString schema;
+    QString getSchemaUsers();
+    QString getSchemaReviews();
+    QString getSchemaDrinksType();
+    QString getSchemaDrinks();
+    QString getSchemaApproval();
 
 signals:
     void successfulLogin(User);
     void badLogin(const QString&);
 
 public slots:
-    void tryLogIn(User);
+    void tryLogIn(User&);
 };
 
 #endif // DB_H

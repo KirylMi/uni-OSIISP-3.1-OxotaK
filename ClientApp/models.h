@@ -2,6 +2,7 @@
 #define MODELS_H
 
 #include <QObject>
+#include <QDebug>
 
 struct User{
     User(){};
@@ -17,6 +18,7 @@ struct User{
     QString password;
     bool isActive;
     QString description;
+    friend QDebug operator<<(QDebug debug, const User &user);
 };
 
 enum drinkType{
