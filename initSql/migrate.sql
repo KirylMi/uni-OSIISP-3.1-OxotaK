@@ -60,6 +60,7 @@ CREATE SEQUENCE "oxotaK".drinks_seq;
 CREATE TABLE IF NOT EXISTS "oxotaK".drinks (
   id INT NOT NULL DEFAULT NEXTVAL ('"oxotaK".drinks_seq'),
   name VARCHAR(45) NOT NULL,
+  photo BYTEA NOT NULL,
   info TEXT NOT NULL,
   drinks_type_id INT NOT NULL references "oxotaK".drinks_type (id),
   PRIMARY KEY (id),
@@ -122,6 +123,10 @@ CREATE TABLE IF NOT EXISTS "oxotaK".reviews (
 INSERT INTO "oxotaK".users(
 	username, name, password, is_active, description)
 	VALUES ('Dendel228', 'C0K01', '098f6bcd4621d373cade4e832627b4f6', 1, 'Foundation member');
+
+INSERT INTO "oxotaK".drinks_type(
+	type)
+	VALUES ('Soda'), ('Beer'), ('Vodka');
 
 /* SET SQL_MODE=@OLD_SQL_MODE; */
 /* SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS; */

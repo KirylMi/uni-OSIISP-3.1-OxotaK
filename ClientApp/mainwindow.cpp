@@ -7,9 +7,16 @@ MainWindow::MainWindow(QWidget* parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    windowAdd = new WindowAdd();
 
+    connect(this->windowAdd,SIGNAL(addNewPressed(Drink&)),&DBParser::getInstance(),SLOT(addDrink(Drink&)));
     connect(&DBParser::getInstance(),SIGNAL(successfulLogin(const User&)),this,SLOT(authorize(const User&)));
+    drinkModel = new DrinkModel(this);
+    ui->mainTable->setModel(drinkModel);
 
+
+
+    refresh();
 }
 
 MainWindow::~MainWindow()
@@ -28,5 +35,11 @@ void MainWindow::authorize(const User &user)
 
 void MainWindow::refresh()
 {
+    this->drinkModel->clearAll();
+    this->drinkModel->drinks = DBParser::getInstance().getAllDrinks();
+}
 
+void MainWindow::on_pushButton_3_clicked()
+{
+    windowAdd->show();
 }

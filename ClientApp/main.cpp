@@ -16,3 +16,5 @@ int main(int argc, char *argv[])
 
     return a.exec();
 }
+
+//tbd int getID of drink from Db to dbparser

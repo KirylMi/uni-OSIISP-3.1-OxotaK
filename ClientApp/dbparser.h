@@ -2,7 +2,10 @@
 #define DBPARSER_H
 
 #include <QObject>
+#include "QByteArray"
 #include "db.h"
+#include "models.h"
+#include <QList>
 
 class DB;
 
@@ -27,6 +30,12 @@ signals:
 
 public slots:
     void tryLogIn(const User&);
+
+    void addDrink(Drink&);
+
+    Drink getDrink(QString &name);
+    Drink getDrink(int &id);
+    QList<Drink>* getAllDrinks();
 
 };
 

@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QDebug>
+#include <QPixmap>
 
 struct User{
     User(){};
@@ -31,21 +32,28 @@ struct User{
 };
 
 enum drinkType{
-    Beer,
     Soda,
-    Vodka
+    Beer,
+    Vodka,
+    UNDEFINED,
+    firstDrinkType=Soda,
+    lastDrinkType=Vodka
 };
+
+    QString getDrinkTypeString(drinkType drinkType);
+drinkType getDrinkTypeFromString(QString str);
 
 struct Drink{
     Drink(){};
-    Drink(int id, QString name, QString info, drinkType type)
-        :id(id),name(name),info(info),type(type){};
+    Drink(int id, QString name, QString info, drinkType type, QPixmap photo)
+        :id(id),name(name),info(info),type(type),photo(photo){};
     Drink (const Drink &other)
-        :id(other.id),name(other.name),info(other.info),type(other.type){};
+        :id(other.id),name(other.name),info(other.info),type(other.type),photo(other.photo){};
     int id;
     QString name;
     QString info;
     drinkType type;
+    QPixmap photo;
 };
 
 #endif // MODELS_H

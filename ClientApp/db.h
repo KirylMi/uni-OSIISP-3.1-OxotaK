@@ -17,6 +17,8 @@
 #include <QCryptographicHash>
 #include <QSqlRecord>
 #include <QSqlRecord>
+#include <QBuffer>
+#include <QByteArray>
 #include "dbparser.h"
 
 class DBParser;
@@ -24,16 +26,9 @@ class DBParser;
 class DB : public QObject {
     Q_OBJECT
 public:
-    //friend class DBParser;
-    //static DB& getInstance();
-
-    //bool canLogIn(const QString& username, const QString& password);
-    //bool canLogIn(const User& obj);
     DB();
+
 private:
-//    DB();
-//    DB& operator=(const DB&);
-//    DB(const DB&);
 
     QSqlDatabase database;
     QVector<QString> params{"HostName","DatabaseName","UserName","Password","Port", "Schema"};
@@ -46,12 +41,18 @@ private:
     QString getSchemaApproval();
 
 signals:
-    //void successfulLogin(User&);
-    //void badLogin(const QString&);
     void error(const QString&);
 
 public slots:
     QSqlQuery& getUserData(const User&);
+    QSqlQuery& addDrink(const Drink&);
+
+    int getDrinkTypeId(const drinkType&);
+    QString getIdOfDrinkType(const int &val);
+
+    QSqlQuery& getDrink(int &id);
+    QSqlQuery& getDrink(QString &name);
+    QSqlQuery& getAllDrinks();
 };
 
 #endif // DB_H

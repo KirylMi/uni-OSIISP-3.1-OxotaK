@@ -18,7 +18,7 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
-       <widget class="QTableView" name="tableView"/>
+       <widget class="QTableView" name="mainTable"/>
       </item>
       <item>
        <layout class="QVBoxLayout" name="verticalLayout">
@@ -118,7 +118,7 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
-         <widget class="QTableView" name="tableView_2">
+         <widget class="QTableView" name="pendingTable">
           <property name="maximumSize">
            <size>
             <width>16777215</width>

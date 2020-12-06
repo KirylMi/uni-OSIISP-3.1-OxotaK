@@ -83,3 +83,63 @@ QSqlQuery& DB::getUserData(const User &user)
     }
     return *query;
 }
+
+
+int DB::getDrinkTypeId(const drinkType& type){
+    QSqlQuery *query = new QSqlQuery;
+    query->prepare("SELECT id FROM " + getSchemaDrinksType() + " WHERE type = :type");
+    query->bindValue(":type", getDrinkTypeString((type)));
+    qDebug()<<"Bind val: "<<getDrinkTypeString(type);
+    query->exec();
+    query->next();
+    return query->value(0).toInt();
+}
+
+QString DB::getIdOfDrinkType(const int &val){
+    QSqlQuery *query = new QSqlQuery;
+    query->prepare("SELECT type FROM " + getSchemaDrinksType() + " WHERE id = :id");
+    query->bindValue(":id", val);
+    qDebug()<<"Bind val: "<<val;
+    query->exec();
+    query->next();
+    return query->value(0).toString();
+}
+
+QSqlQuery &DB::getDrink(int &id)
+{
+    QSqlQuery *query = new QSqlQuery;
+    query->exec("SELECT * FROM " + getSchemaDrinks() + " WHERE id = '" + id + '\'');
+    return *query;
+}
+
+QSqlQuery &DB::getDrink(QString &name)
+{
+    QSqlQuery *query = new QSqlQuery;
+    query->exec("SELECT * FROM " + getSchemaDrinks() + " WHERE name = '" + name + '\'');
+    return *query;
+}
+
+QSqlQuery &DB::getAllDrinks()
+{
+    QSqlQuery *query = new QSqlQuery;
+    query->exec("SELECT * FROM " + getSchemaDrinks());
+    return *query;
+}
+
+QSqlQuery& DB::addDrink(const Drink &drink){
+    QSqlQuery *query = new QSqlQuery;
+    query->prepare("INSERT INTO " + getSchemaDrinks() + "( "
+                   "name, photo, info, drinks_type_id)"
+                   " VALUES (:name, :photo, :info, :drinks_type_id);");
+    query->bindValue(":drinks_type_id",getDrinkTypeId(drink.type));
+    qDebug()<<"bind value: "<<getDrinkTypeId(drink.type);
+    query->bindValue(":name",drink.name);
+    QByteArray byteArr;
+    QBuffer buffer(&byteArr);
+    buffer.open(QIODevice::WriteOnly);
+    drink.photo.save(&buffer,"PNG");
+    query->bindValue(":photo",buffer.data());
+    query->bindValue(":info",drink.info);
+    query->exec();
+    return *query;
+}

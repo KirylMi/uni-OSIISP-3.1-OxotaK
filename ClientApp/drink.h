@@ -2,13 +2,23 @@
 #define DRINK_H
 
 #include <QAbstractItemModel>
+#include <QList>
+#include "models.h"
+#include <QMap>
+#include <QtAlgorithms>
 
-class Drink : public QAbstractItemModel
+
+class DrinkModel : public QAbstractItemModel
 {
     Q_OBJECT
 
 public:
-    explicit Drink(QObject *parent = nullptr);
+
+    QList<Drink> *drinks;
+
+    void clearAll();
+
+    explicit DrinkModel(QObject *parent = nullptr);
 
     // Header:
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
