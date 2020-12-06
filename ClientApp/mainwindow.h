@@ -12,6 +12,7 @@
 #include "dbparser.h"
 #include "windowadd.h"
 #include "drink.h"
+#include <QTableView>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {

@@ -12,7 +12,7 @@ WindowAdd::WindowAdd(QWidget *parent) :
     for (int i = firstDrinkType; i<=lastDrinkType; i++){
         ui->drinks_types->addItem(getDrinkTypeString(drinkType(i)));
     }
-    connect(this,SIGNAL(badInput(QString&)),this,SLOT(errorMsg(QString&)));
+    connect(this,SIGNAL(badInput(const QString&)),this,SLOT(errorMsg(const QString&)));
 }
 
 WindowAdd::~WindowAdd()
