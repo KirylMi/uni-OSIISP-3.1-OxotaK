@@ -81,7 +81,7 @@ Drink DBParser::getDrink(QString &name)
     result->id = query.value(record.indexOf("id")).toInt();
     result->info = query.value(record.indexOf("info")).toString();
     result->name = query.value(record.indexOf("name")).toString();
-    result->type = getDrinkTypeFromString(this->database->getIdOfDrinkType(query.value(record.indexOf("drinks_type_id")).toInt()));
+    result->type = getDrinkTypeFromString(this->database->getStringOfDrinkTypeId(query.value(record.indexOf("drinks_type_id")).toInt()));
     //QPixmap pixmap;
     result->photo.loadFromData(query.value(record.indexOf("photo")).toByteArray(),"PNG");
 
@@ -99,7 +99,7 @@ Drink DBParser::getDrink(int &id)
     QSqlQuery query = this->database->getDrink(id);
 }
 
-QList<Drink>* DBParser::getAllDrinks()
+QList<Drink>* DBParser::    getAllDrinks()
 {
     QSqlQuery query = this->database->getAllDrinks();
     QSqlRecord record = query.record();
@@ -111,7 +111,7 @@ QList<Drink>* DBParser::getAllDrinks()
                            query.value(record.indexOf("id")).toInt(),
                            query.value(record.indexOf("name")).toString(),
                            query.value(record.indexOf("info")).toString(),
-                           getDrinkTypeFromString(this->database->getIdOfDrinkType(query.value(record.indexOf("drinks_type_id")).toInt())),
+                           getDrinkTypeFromString(this->database->getStringOfDrinkTypeId(query.value(record.indexOf("drinks_type_id")).toInt())),
                            *image
                        });
     }

@@ -95,7 +95,7 @@ int DB::getDrinkTypeId(const drinkType& type){
     return query->value(0).toInt();
 }
 
-QString DB::getIdOfDrinkType(const int &val){
+QString DB::getStringOfDrinkTypeId(const int &val){
     QSqlQuery *query = new QSqlQuery;
     query->prepare("SELECT type FROM " + getSchemaDrinksType() + " WHERE id = :id");
     query->bindValue(":id", val);

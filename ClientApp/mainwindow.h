@@ -13,6 +13,7 @@
 #include "windowadd.h"
 #include "drink.h"
 #include <QTableView>
+#include "windowedit.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -35,13 +36,21 @@ private slots:
 
     void on_pushButton_3_clicked();
 
+    void on_pushButton_2_clicked();
+
+    void on_pushButton_4_clicked();
+
 signals:
     void somethingWasPressed();
 
 private:
     Ui::MainWindow* ui;
+
     User currentUser;
+
     WindowAdd *windowAdd;
+    WindowEdit *windowEdit;
+
     DrinkModel *drinkModel;
 
 };

@@ -48,7 +48,7 @@ public slots:
     QSqlQuery& addDrink(const Drink&);
 
     int getDrinkTypeId(const drinkType&);
-    QString getIdOfDrinkType(const int &val);
+    QString getStringOfDrinkTypeId(const int &val);
 
     QSqlQuery& getDrink(int &id);
     QSqlQuery& getDrink(QString &name);

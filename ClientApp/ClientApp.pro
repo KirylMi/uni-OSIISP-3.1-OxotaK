@@ -18,7 +18,8 @@ SOURCES += \
     mainwindow.cpp \
     models.cpp \
     utils.cpp \
-    windowadd.cpp
+    windowadd.cpp \
+    windowedit.cpp
 
 HEADERS += \
     db.h \
@@ -28,12 +29,14 @@ HEADERS += \
     mainwindow.h \
     models.h \
     utils.h \
-    windowadd.h
+    windowadd.h \
+    windowedit.h
 
 FORMS += \
     loginwindow.ui \
     mainwindow.ui \
-    windowadd.ui
+    windowadd.ui \
+    windowedit.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
