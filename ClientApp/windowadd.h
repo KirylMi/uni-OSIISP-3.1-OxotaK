@@ -28,6 +28,8 @@ private slots:
     void on_pushButton_clicked();
     void errorMsg(const QString&);
 
+    void on_buttonBox_clicked(QAbstractButton *button);
+
 signals:
     void addNewPressed(Drink &obj);
     void badInput(const QString &input);

@@ -42,7 +42,7 @@ DB::DB()
     }
 
     this->schema=jsonObj.value("Schema").toString();
-    //connect(this,SIGNAL(pressedExit(User)),&DB::getInstance(),SLOT(tryLogIn(User)));
+
 }
 
 QString DB::getSchemaUsers()
@@ -85,14 +85,15 @@ QSqlQuery& DB::getUserData(const User &user)
 }
 
 
-int DB::getDrinkTypeId(const drinkType& type){
+QSqlQuery& DB::getDrinkTypeId(const drinkType& type){
     QSqlQuery *query = new QSqlQuery;
     query->prepare("SELECT id FROM " + getSchemaDrinksType() + " WHERE type = :type");
     query->bindValue(":type", getDrinkTypeString((type)));
     qDebug()<<"Bind val: "<<getDrinkTypeString(type);
-    query->exec();
-    query->next();
-    return query->value(0).toInt();
+    if (!query->exec()){
+        emit error("DB doesn't respond (getDrinkTypeId function)");
+    }
+    return *query;
 }
 
 QString DB::getStringOfDrinkTypeId(const int &val){
@@ -126,13 +127,33 @@ QSqlQuery &DB::getAllDrinks()
     return *query;
 }
 
-QSqlQuery& DB::addDrink(const Drink &drink){
+QSqlQuery& DB::addDrink(const Drink &drink,  const int& drinkTypeId){
     QSqlQuery *query = new QSqlQuery;
     query->prepare("INSERT INTO " + getSchemaDrinks() + "( "
                    "name, photo, info, drinks_type_id)"
                    " VALUES (:name, :photo, :info, :drinks_type_id);");
-    query->bindValue(":drinks_type_id",getDrinkTypeId(drink.type));
-    qDebug()<<"bind value: "<<getDrinkTypeId(drink.type);
+    query->bindValue(":drinks_type_id",drinkTypeId);
+    qDebug()<<"bind value: "<<drinkTypeId;
+    query->bindValue(":name",drink.name);
+    QByteArray byteArr;
+    QBuffer buffer(&byteArr);
+    buffer.open(QIODevice::WriteOnly);
+    drink.photo.save(&buffer,"PNG");
+    query->bindValue(":photo",buffer.data());
+    query->bindValue(":info",drink.info);
+    query->exec();
+    return *query;
+}
+
+QSqlQuery &DB::updateDrink(const Drink &drink, const int &drinkTypeId)
+{
+    QSqlQuery *query = new QSqlQuery;
+    query->prepare("UPDATE " + getSchemaDrinks() + " " +
+                   "SET name=:name, photo=:photo, info=:info, drinks_type_id=:drinks_type_id "
+                   "WHERE id = :id;");
+    query->bindValue(":id",drink.id);
+    query->bindValue(":drinks_type_id",drinkTypeId);
+    qDebug()<<"bind value: "<<drinkTypeId;
     query->bindValue(":name",drink.name);
     QByteArray byteArr;
     QBuffer buffer(&byteArr);

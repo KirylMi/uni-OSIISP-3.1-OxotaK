@@ -27,6 +27,5 @@ drinkType getDrinkTypeFromString(QString str){
     if (str=="Soda") return Soda;
     if (str=="Beer") return Beer;
     if (str=="Vodka") return Vodka;
-
     return UNDEFINED;
 }

@@ -14,4 +14,5 @@
 ~~
 
 ### Temp info:
-1. Get DB connection settings from file or smth (equivalent of dotenv maybe?)
+1. Fix button names
+2. Maybe one Basic window, and others will be derived from it? (AddWindow, EditWindow)

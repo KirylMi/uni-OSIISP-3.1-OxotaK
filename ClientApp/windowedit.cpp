@@ -22,7 +22,45 @@ void WindowEdit::getDrinkData(Drink obj)
     this->ui->description->setText(obj.info);
     this->ui->photo->setPixmap(obj.photo);
     qDebug()<<getDrinkTypeString(obj.type);
-    //qDebug()<<ui->drinks_types->currentData();
     int tempIndexOfComboBox = ui->drinks_types->findData((obj.type));
     this->ui->drinks_types->setCurrentIndex(tempIndexOfComboBox);
+    this->hiddenId = obj.id;
+}
+
+//accept/exit buttons TBD FIX NAMES
+void WindowEdit::on_buttonBox_clicked(QAbstractButton *button)
+{
+    if(button->text()=="&OK" || button->text()=="OK"){
+        qDebug()<<"Chosen drink type: "<<ui->drinks_types->currentText();
+
+        auto photo = ui->photo->pixmap(Qt::ReturnByValue);
+
+        if (ui->name->toPlainText().isEmpty()
+                || ui->description->toPlainText().isEmpty()
+                || photo.isNull())
+        {
+            emit(badInput("Bad input"));
+            return;
+        }
+
+        Drink *obj = new Drink(this->hiddenId,
+                  ui->name->toPlainText(),
+                  ui->description->toPlainText(),
+                  getDrinkTypeFromString(ui->drinks_types->currentText()),
+                  photo);
+        emit (editPressed(*obj));
+    }
+}
+
+//choose image button TBD FIX NAMES
+void WindowEdit::on_pushButton_clicked()
+{
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"),
+                                                    "/home",
+                                                    tr("Images (*.png)"));
+    if (!fileName.isEmpty()){
+        QPixmap temp(fileName);
+        temp = temp.scaled(ui->photo->width(),ui->photo->height());
+        ui->photo->setPixmap(temp);
+    }
 }

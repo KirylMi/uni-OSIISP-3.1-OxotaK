@@ -2,8 +2,10 @@
 #define WINDOWEDIT_H
 
 #include <QDialog>
+#include <QAbstractButton>
 #include "models.h"
 #include "dbparser.h"
+#include <QFileDialog>
 
 namespace Ui {
 class WindowEdit;
@@ -18,8 +20,18 @@ public:
     ~WindowEdit();
     void getDrinkData(Drink);
 
+private slots:
+    void on_buttonBox_clicked(QAbstractButton *button);
+
+    void on_pushButton_clicked();
+
+signals:
+    void editPressed(Drink &obj);
+    void badInput(const QString &input);
+
 private:
     Ui::WindowEdit *ui;
+    int hiddenId;
 };
 
 #endif // WINDOWEDIT_H

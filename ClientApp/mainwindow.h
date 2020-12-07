@@ -32,7 +32,7 @@ public slots:
     void authorize(const User&);
 
 private slots:
-    void refresh();
+    void refresh(QList<Drink>* data = nullptr);
 
     void on_pushButton_3_clicked();
 

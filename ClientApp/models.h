@@ -49,6 +49,7 @@ struct Drink{
         :id(id),name(name),info(info),type(type),photo(photo){};
     Drink (const Drink &other)
         :id(other.id),name(other.name),info(other.info),type(other.type),photo(other.photo){};
+    Drink& operator = (const Drink& other) = default;
     int id;
     QString name;
     QString info;

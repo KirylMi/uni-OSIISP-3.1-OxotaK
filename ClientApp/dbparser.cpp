@@ -5,17 +5,20 @@
 
 
 void DBParser::tryLogIn(const User &user){
-    //if username+pass not empty tbd
+
+    if (user.username.isEmpty() || user.password.isEmpty()){
+        emit badLogin("Nice input data dude");
+        return;
+    }
+
     QSqlQuery query = this->database->getUserData(user);
     query.next();
     if (!query.isValid()){
         emit(badLogin("Such user doesn't exist :("));
-        //return false;
     }
     else{
         emit(successfulLogin(user));
     }
-    //return true;
 }
 
 DBParser &DBParser::getInstance()
@@ -29,7 +32,7 @@ DBParser &DBParser::getInstance()
 User &DBParser::getUser(const User &user)
 {
     QSqlQuery query  = this->database->getUserData(user);
-    //tdb DRY ^^^ (canLogIn Function)
+
     query.next();
     User *result = new User;
     if (!query.isValid()){
@@ -63,12 +66,22 @@ DBParser::DBParser()
 
 
 
-//C1
 void DBParser::addDrink(Drink &obj){
-    QSqlQuery query  = this->database->addDrink(obj);
+    QSqlQuery query  = this->database->addDrink(obj,getDrinkTypeId(obj.type));
+    emit (dataChanged(getAllDrinks()));
+}
+
+void DBParser::updateDrink(Drink &obj)
+{
+    QSqlQuery query  = this->database->updateDrink(obj,getDrinkTypeId(obj.type));
+    emit (dataChanged(getAllDrinks()));
+}
+
+int DBParser::getDrinkTypeId(const drinkType &drinkType)
+{
+    QSqlQuery query = this->database->getDrinkTypeId(drinkType);
     query.next();
-    //C2
-    this->getDrink(obj.name);
+    return query.value(0).toInt();
 }
 
 Drink DBParser::getDrink(QString &name)
@@ -76,20 +89,12 @@ Drink DBParser::getDrink(QString &name)
     QSqlQuery query = this->database->getDrink(name);
     query.next();
     Drink *result = new Drink;
-    //tbd check
     QSqlRecord record = query.record();
     result->id = query.value(record.indexOf("id")).toInt();
     result->info = query.value(record.indexOf("info")).toString();
     result->name = query.value(record.indexOf("name")).toString();
     result->type = getDrinkTypeFromString(this->database->getStringOfDrinkTypeId(query.value(record.indexOf("drinks_type_id")).toInt()));
-    //QPixmap pixmap;
     result->photo.loadFromData(query.value(record.indexOf("photo")).toByteArray(),"PNG");
-
-    QFile file("tempFile.png");
-    file.open(QIODevice::WriteOnly);
-    result->photo.save(&file,"PNG");
-
-
 
     return *result;
 }
@@ -97,9 +102,19 @@ Drink DBParser::getDrink(QString &name)
 Drink DBParser::getDrink(int &id)
 {
     QSqlQuery query = this->database->getDrink(id);
+    query.next();
+    Drink *result = new Drink;
+    QSqlRecord record = query.record();
+    result->id = query.value(record.indexOf("id")).toInt();
+    result->info = query.value(record.indexOf("info")).toString();
+    result->name = query.value(record.indexOf("name")).toString();
+    result->type = getDrinkTypeFromString(this->database->getStringOfDrinkTypeId(query.value(record.indexOf("drinks_type_id")).toInt()));
+    result->photo.loadFromData(query.value(record.indexOf("photo")).toByteArray(),"PNG");
+
+    return *result;
 }
 
-QList<Drink>* DBParser::    getAllDrinks()
+QList<Drink>* DBParser::getAllDrinks()
 {
     QSqlQuery query = this->database->getAllDrinks();
     QSqlRecord record = query.record();

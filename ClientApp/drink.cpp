@@ -5,6 +5,16 @@ void DrinkModel::clearAll()
     this->drinks->clear();
 }
 
+void DrinkModel::refresh(QList<Drink> *newList)
+{
+    this->beginResetModel();
+    if (newList){
+        this->clearAll();
+        this->drinks = newList;
+    }
+    this->endResetModel();
+}
+
 DrinkModel::DrinkModel(QObject *parent)
     : QAbstractTableModel(parent)
 {
