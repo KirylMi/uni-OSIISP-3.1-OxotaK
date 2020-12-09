@@ -31,6 +31,7 @@ public:
 public slots:
     void authorize(const User&);
 
+
 private slots:
     void refresh(QList<Drink>* data = nullptr);
 

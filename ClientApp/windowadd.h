@@ -11,6 +11,7 @@
 #include "models.h"
 
 #include <QMessageBox>
+#include "dbparser.h"
 
 namespace Ui {
 class WindowAdd;

@@ -27,6 +27,7 @@ class DB : public QObject {
     Q_OBJECT
 public:
     DB();
+    friend DBParser;
 
 private:
 
@@ -40,6 +41,8 @@ private:
     QString getSchemaDrinks();
     QString getSchemaApproval();
 
+    QString getStringOfDrinkTypeId(const int &val);
+
 signals:
     void error(const QString&);
 
@@ -48,8 +51,10 @@ public slots:
     QSqlQuery& addDrink(const Drink&, const int& drinkTypeId);
     QSqlQuery& updateDrink(const Drink&, const int& drinkTypeId);
 
+    QSqlQuery& regUser(const User&);
+
     QSqlQuery& getDrinkTypeId(const drinkType&);
-    QString getStringOfDrinkTypeId(const int &val);
+
 
     QSqlQuery& getDrink(int &id);
     QSqlQuery& getDrink(QString &name);

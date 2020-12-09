@@ -28,6 +28,8 @@ private:
 signals:
     void successfulLogin(const User&);
     void badLogin(const QString&);
+    void badNewData(const QString&);
+    void badUpdateData(const QString&);
     void dataChanged(QList<Drink>*);
 
 public slots:
@@ -42,6 +44,7 @@ public slots:
     Drink getDrink(int &id);
     QList<Drink>* getAllDrinks();
 
+    void regUser(const User &user);
 };
 
 #endif // DBPARSER_H

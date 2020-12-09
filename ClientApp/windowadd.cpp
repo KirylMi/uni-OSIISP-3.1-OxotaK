@@ -9,10 +9,14 @@ WindowAdd::WindowAdd(QWidget *parent) :
     ui(new Ui::WindowAdd)
 {
     ui->setupUi(this);
+
+
     for (int i = firstDrinkType; i<=lastDrinkType; i++){
         ui->drinks_types->addItem(getDrinkTypeString(drinkType(i)));
     }
+
     connect(this,SIGNAL(badInput(const QString&)),this,SLOT(errorMsg(const QString&)));
+    connect(&DBParser::getInstance(),SIGNAL(badNewData(const QString&)), this, SLOT(errorMsg(const QString&)));
 }
 
 WindowAdd::~WindowAdd()

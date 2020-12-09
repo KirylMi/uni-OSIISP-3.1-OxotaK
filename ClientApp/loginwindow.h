@@ -8,6 +8,7 @@
 #include "models.h"
 #include "db.h"
 #include "dbparser.h"
+#include "regwindow.h"
 #include <QCloseEvent>
 
 namespace Ui {
@@ -30,9 +31,14 @@ private slots:
     void on_buttonBox_clicked(QAbstractButton *button);
     void errorMsg(const QString&);
 
+    void on_buttonSignUp_clicked();
+
 private:
     Ui::LoginWindow *ui;
     void closeEvent(QCloseEvent *);
+    RegWindow *regWindow;
+
+
 };
 
 #endif // LOGINWINDOW_H

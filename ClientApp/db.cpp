@@ -89,7 +89,7 @@ QSqlQuery& DB::getDrinkTypeId(const drinkType& type){
     QSqlQuery *query = new QSqlQuery;
     query->prepare("SELECT id FROM " + getSchemaDrinksType() + " WHERE type = :type");
     query->bindValue(":type", getDrinkTypeString((type)));
-    qDebug()<<"Bind val: "<<getDrinkTypeString(type);
+    //qDebug()<<"Bind val: "<<getDrinkTypeString(type);
     if (!query->exec()){
         emit error("DB doesn't respond (getDrinkTypeId function)");
     }
@@ -100,7 +100,7 @@ QString DB::getStringOfDrinkTypeId(const int &val){
     QSqlQuery *query = new QSqlQuery;
     query->prepare("SELECT type FROM " + getSchemaDrinksType() + " WHERE id = :id");
     query->bindValue(":id", val);
-    qDebug()<<"Bind val: "<<val;
+    //qDebug()<<"Bind val: "<<val;
     query->exec();
     query->next();
     return query->value(0).toString();
@@ -153,7 +153,7 @@ QSqlQuery &DB::updateDrink(const Drink &drink, const int &drinkTypeId)
                    "WHERE id = :id;");
     query->bindValue(":id",drink.id);
     query->bindValue(":drinks_type_id",drinkTypeId);
-    qDebug()<<"bind value: "<<drinkTypeId;
+    //qDebug()<<"bind value: "<<drinkTypeId;
     query->bindValue(":name",drink.name);
     QByteArray byteArr;
     QBuffer buffer(&byteArr);
@@ -164,3 +164,20 @@ QSqlQuery &DB::updateDrink(const Drink &drink, const int &drinkTypeId)
     query->exec();
     return *query;
 }
+
+QSqlQuery &DB::regUser(const User &user)
+{
+    QSqlQuery *query = new QSqlQuery;
+    query->prepare("INSERT INTO " +getSchemaUsers() + " ("
+                    "username, name, password, description)"
+                       "VALUES (:username, :name, :password, :description);");
+    query->bindValue(":username",user.username);
+    query->bindValue(":name",user.name);
+    query->bindValue(":password",user.password);
+    query->bindValue(":description",user.description);
+    query->exec();
+    return *query;
+}
+
+
+

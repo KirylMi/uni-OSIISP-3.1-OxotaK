@@ -5,10 +5,15 @@ WindowEdit::WindowEdit(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::WindowEdit)
 {
+
     ui->setupUi(this);
+
     for (int i = firstDrinkType; i<=lastDrinkType; i++){
         ui->drinks_types->addItem(getDrinkTypeString(drinkType(i)),drinkType(i));
     }
+
+    connect(this,SIGNAL(badInput(const QString&)),this,SLOT(errorMsg(const QString&)));
+    connect(&DBParser::getInstance(),SIGNAL(badUpdateData(const QString&)), this, SLOT(errorMsg(const QString&)));
 }
 
 WindowEdit::~WindowEdit()
@@ -25,6 +30,10 @@ void WindowEdit::getDrinkData(Drink obj)
     int tempIndexOfComboBox = ui->drinks_types->findData((obj.type));
     this->ui->drinks_types->setCurrentIndex(tempIndexOfComboBox);
     this->hiddenId = obj.id;
+}
+void WindowEdit::errorMsg(const QString &obj)
+{
+    QMessageBox::information(this, "Error",obj);
 }
 
 //accept/exit buttons TBD FIX NAMES

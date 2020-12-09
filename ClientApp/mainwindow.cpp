@@ -14,7 +14,7 @@ MainWindow::MainWindow(QWidget* parent)
     windowEdit = new WindowEdit();
 
     connect(this->windowAdd,SIGNAL(addNewPressed(Drink&)),&DBParser::getInstance(),SLOT(addDrink(Drink&)));
-    connect(this->windowEdit,SIGNAL(editPressed(Drink&)),&DBParser::getInstance(),SLOT(updateDrink(Drink&)));  ////////TDB NOT ADD BUT UPDATE!. And id must be known (maybe?)
+    connect(this->windowEdit,SIGNAL(editPressed(Drink&)),&DBParser::getInstance(),SLOT(updateDrink(Drink&)));
     connect(&DBParser::getInstance(),SIGNAL(successfulLogin(const User&)),this,SLOT(authorize(const User&)));
     connect(&DBParser::getInstance(),SIGNAL(dataChanged(QList<Drink>*)),this,SLOT(refresh(QList<Drink>*)));
 

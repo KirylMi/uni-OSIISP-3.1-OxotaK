@@ -21,6 +21,24 @@ void DBParser::tryLogIn(const User &user){
     }
 }
 
+void DBParser::regUser(const User &user){
+    if (user.username.isEmpty()
+            || user.password.isEmpty()
+            || user.description.isEmpty()
+            || user.name.isEmpty())
+    {
+        emit badLogin("Nice input data dude");
+        return;
+    }
+
+    QSqlQuery query = this->database->regUser(user);
+    query.next();
+    //TBD active or valid?
+    if (!query.isActive()){
+        //TBD emit
+    }
+}
+
 DBParser &DBParser::getInstance()
 {
     static DBParser obj;
@@ -68,12 +86,31 @@ DBParser::DBParser()
 
 void DBParser::addDrink(Drink &obj){
     QSqlQuery query  = this->database->addDrink(obj,getDrinkTypeId(obj.type));
+    query.next();
+    if (query.isActive()){
+        qDebug()<<"Is valid!";
+    }
+    else{
+        emit badNewData("Such drink, probably, already exists");
+        qDebug()<<"Isn't valid!";
+    }
+
+
     emit (dataChanged(getAllDrinks()));
 }
 
 void DBParser::updateDrink(Drink &obj)
 {
     QSqlQuery query  = this->database->updateDrink(obj,getDrinkTypeId(obj.type));
+    query.next();
+    if (query.isActive()){
+        qDebug()<<"Is valid!";
+    }
+    else{
+        emit badUpdateData("Such drink, probably, already exists");
+        qDebug()<<"Isn't valid!";
+    }
+
     emit (dataChanged(getAllDrinks()));
 }
 

@@ -6,6 +6,7 @@
 #include "models.h"
 #include "dbparser.h"
 #include <QFileDialog>
+#include <QMessageBox>
 
 namespace Ui {
 class WindowEdit;
@@ -22,7 +23,7 @@ public:
 
 private slots:
     void on_buttonBox_clicked(QAbstractButton *button);
-
+    void errorMsg(const QString&);
     void on_pushButton_clicked();
 
 signals:
