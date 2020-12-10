@@ -62,6 +62,7 @@ void MainWindow::authorize(const User &user)
     qDebug()<<currentUser;
     refresh(DBParser::getInstance().getAllDrinks(),
             DBParser::getInstance().getPendingUsersForId(this->currentUser.id));
+    //////////////////////////////////////////////////////////////////////////////////////TBD REFRESH DOESNT GIVE EXPECTED RESULT
 }
 
 void MainWindow::refresh(QList<Drink>* drinks, QList<User>* users)

@@ -17,7 +17,12 @@ void DBParser::tryLogIn(const User &user){
         emit(badLogin("Such user doesn't exist :("));
     }
     else{
-        emit(successfulLogin(user));
+        if (query.value(query.record().indexOf("is_active")).toBool()==true){
+            emit(successfulLogin(user));
+        }
+        else{
+            emit badLogin("Such user is not yet activated");
+        }
     }
 }
 
