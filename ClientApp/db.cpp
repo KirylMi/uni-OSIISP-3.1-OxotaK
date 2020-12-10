@@ -127,6 +127,84 @@ QSqlQuery &DB::getAllDrinks()
     return *query;
 }
 
+QSqlQuery &DB::getPendingUsersForId(const int &id)
+{
+    QSqlQuery *query = new QSqlQuery;
+    query->prepare("SELECT id,name,description "
+                   "FROM " + getSchemaUsers() + " " +
+                   "EXCEPT "
+                   "(SELECT id,name,description FROM "
+                   + getSchemaUsers() + " AS users "
+                   "INNER JOIN "
+                   + getSchemaApproval() + " AS approval "
+                   "ON users.id=new_user_id "
+                                           "AND approval.approval_id=:id "
+                                           "OR users.id=:id)");
+    query->bindValue(":id",id);
+    query->exec();
+    return *query;
+}
+
+QSqlQuery &DB::getAllActiveUsers()
+{
+    QSqlQuery *query = new QSqlQuery;
+    query->exec("SELECT * FROM " + getSchemaUsers() + " WHERE is_active=1");
+    return *query;
+}
+
+QSqlQuery &DB::getAllActiveUsersCount()
+{
+    QSqlQuery *query = new QSqlQuery;
+    query->exec("SELECT COUNT(*) FROM " + getSchemaUsers() + " WHERE is_active=1");
+    return *query;
+}
+
+QSqlQuery &DB::getAllPendingUsers()
+{
+    QSqlQuery *query = new QSqlQuery;
+    query->exec("SELECT * FROM " + getSchemaUsers() + " WHERE is_active=0");
+    return *query;
+}
+
+QSqlQuery &DB::getAllPendingUsersCount()
+{
+    QSqlQuery *query = new QSqlQuery;
+    query->exec("SELECT COUNT(*) FROM " + getSchemaUsers() + " WHERE is_active=0");
+    return *query;
+}
+
+QSqlQuery &DB::getApproversOf(const int &id)
+{
+    QSqlQuery *query = new QSqlQuery;
+    query->prepare("SELECT approval_id FROM " + getSchemaApproval()+ " WHERE new_user_id = :id");
+    query->bindValue(":id",id);
+    query->exec();
+    return *query;
+}
+
+QSqlQuery &DB::approveUser(const User &user)
+{
+    QSqlQuery *query = new QSqlQuery;
+    query->prepare("UPDATE " + getSchemaUsers() + " SET is_active=1 WHERE id=:id");
+    query->bindValue(":id",user.id);
+    query->exec();
+    return *query;
+}
+
+QSqlQuery &DB::addApproval(const User &user, const int &id)
+{
+    QSqlQuery *query = new QSqlQuery;
+    query->prepare("INSERT INTO " + getSchemaApproval() + "( "
+                   "new_user_id,approval_id) "
+                   "VALUES (:newUserId, :currentUserId);");
+    query->bindValue(":newUserId",user.id);
+    query->bindValue(":currentUserId",id);
+    query->exec();
+    return *query;
+}
+
+
+
 QSqlQuery& DB::addDrink(const Drink &drink,  const int& drinkTypeId){
     QSqlQuery *query = new QSqlQuery;
     query->prepare("INSERT INTO " + getSchemaDrinks() + "( "
@@ -173,7 +251,7 @@ QSqlQuery &DB::regUser(const User &user)
                        "VALUES (:username, :name, :password, :description);");
     query->bindValue(":username",user.username);
     query->bindValue(":name",user.name);
-    query->bindValue(":password",user.password);
+    query->bindValue(":password", QString(QCryptographicHash::hash((user.password.toUtf8()),QCryptographicHash::Md5).toHex()));
     query->bindValue(":description",user.description);
     query->exec();
     return *query;

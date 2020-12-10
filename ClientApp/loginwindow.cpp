@@ -12,6 +12,7 @@ LoginWindow::LoginWindow(QWidget *parent) :
     connect(this,SIGNAL(pressedOk(const User&)),&DBParser::getInstance(),SLOT(tryLogIn(const User&)));
     connect(&DBParser::getInstance(),SIGNAL(badLogin(const QString&)),this,SLOT(errorMsg(const QString&)));
     connect(this->regWindow,SIGNAL(pressedReg(const User&)),&DBParser::getInstance(),SLOT(regUser(const User&)));
+    connect(&DBParser::getInstance(),SIGNAL(badRegData(const QString&)),this,SLOT(errorMsg(const QString&)));
 
     ui->textEdit->setTabChangesFocus(true);
     ui->textEdit_2->setTabChangesFocus(true);

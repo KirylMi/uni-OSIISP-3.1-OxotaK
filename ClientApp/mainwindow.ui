@@ -128,9 +128,9 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_6">
+         <widget class="QPushButton" name="buttonApprove">
           <property name="text">
-           <string>PushButton</string>
+           <string>Approve</string>
           </property>
          </widget>
         </item>

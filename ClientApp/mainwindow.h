@@ -14,6 +14,7 @@
 #include "drink.h"
 #include <QTableView>
 #include "windowedit.h"
+#include "user.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -33,13 +34,17 @@ public slots:
 
 
 private slots:
-    void refresh(QList<Drink>* data = nullptr);
+    void refresh(QList<Drink>* drinks = nullptr,
+                 QList<User>* users = nullptr);
 
     void on_pushButton_3_clicked();
 
     void on_pushButton_2_clicked();
 
     void on_pushButton_4_clicked();
+
+
+    void on_buttonApprove_clicked();
 
 signals:
     void somethingWasPressed();
@@ -53,6 +58,7 @@ private:
     WindowEdit *windowEdit;
 
     DrinkModel *drinkModel;
+    UserModel *userModel;
 
 };
 #endif // MAINWINDOW_H

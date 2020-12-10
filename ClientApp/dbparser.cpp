@@ -35,7 +35,27 @@ void DBParser::regUser(const User &user){
     query.next();
     //TBD active or valid?
     if (!query.isActive()){
-        //TBD emit
+        emit badRegData("Such user already exists");
+    }
+}
+
+void DBParser::approveUser(const User &user)
+{
+    //tbd checkers
+    QSqlQuery query = this->database->approveUser(user);
+    query.next();
+    //tbd
+}
+
+void DBParser::addApproval(const User &user, const int &id)
+{
+    QSqlQuery query = this->database->addApproval(user,id);
+    query.next();
+    //tbd check, if query failed, it means something really sad :(
+    int approversOfUserCount = this->database->getApproversOf(user.id).value(0).toInt();
+    int activeUsersCount = this->database->getAllActiveUsersCount().value(0).toInt();
+    if (approversOfUserCount == activeUsersCount){
+        approveUser(user);
     }
 }
 
@@ -84,6 +104,8 @@ DBParser::DBParser()
 
 
 
+
+
 void DBParser::addDrink(Drink &obj){
     QSqlQuery query  = this->database->addDrink(obj,getDrinkTypeId(obj.type));
     query.next();
@@ -96,7 +118,7 @@ void DBParser::addDrink(Drink &obj){
     }
 
 
-    emit (dataChanged(getAllDrinks()));
+    emit (dataChanged(getAllDrinks(),nullptr));
 }
 
 void DBParser::updateDrink(Drink &obj)
@@ -111,7 +133,7 @@ void DBParser::updateDrink(Drink &obj)
         qDebug()<<"Isn't valid!";
     }
 
-    emit (dataChanged(getAllDrinks()));
+    emit (dataChanged(getAllDrinks(),nullptr));
 }
 
 int DBParser::getDrinkTypeId(const drinkType &drinkType)
@@ -170,4 +192,49 @@ QList<Drink>* DBParser::getAllDrinks()
 
     delete image;
     return result;
+}
+
+QList<User> *DBParser::getPendingUsersForId(const int &id)
+{
+    QSqlQuery query = this->database->getPendingUsersForId(id);
+    QSqlRecord record = query.record();
+    QList<User> *result = new QList<User>;
+    while (query.next()){
+        result->append({
+                           query.value(record.indexOf("id")).toInt(),
+                           query.value(record.indexOf("username")).toString(),
+                           query.value(record.indexOf("name")).toString(),
+                           query.value(record.indexOf("password")).toString(),
+                           query.value(record.indexOf("is_active")).toBool(),
+                           query.value(record.indexOf("description")).toString(),
+                       });
+    }
+
+    return result;
+
+}
+
+QList<User> *DBParser::getAllPendingUsers()
+{
+    QSqlQuery query = this->database->getAllPendingUsers();
+    QSqlRecord record = query.record();
+    QList<User> *result = new QList<User>;
+    while (query.next()){
+        result->append({
+                           query.value(record.indexOf("id")).toInt(),
+                           query.value(record.indexOf("username")).toString(),
+                           query.value(record.indexOf("name")).toString(),
+                           query.value(record.indexOf("password")).toString(),
+                           query.value(record.indexOf("is_active")).toBool(),
+                           query.value(record.indexOf("description")).toString(),
+                       });
+    }
+    return result;
+}
+
+int DBParser::getAllPendingUsersCount()
+{
+    QSqlQuery query = this->database->getAllPendingUsersCount();
+    query.next();
+    return query.value(0).toInt();
 }

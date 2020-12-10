@@ -59,6 +59,24 @@ public slots:
     QSqlQuery& getDrink(int &id);
     QSqlQuery& getDrink(QString &name);
     QSqlQuery& getAllDrinks();
+
+    QSqlQuery& getPendingUsersForId(const int &id);
+
+
+    //Those functions could've been implemented from one getUsers, and then
+    //i could've used something like users->count(), or count where is_active==false || true,
+    //but it's not very great for the performance.
+    //Yes, it's better for code integrity, visibility etc,
+    //But it will be slower.
+    QSqlQuery& getAllActiveUsers();
+    QSqlQuery& getAllActiveUsersCount();
+    QSqlQuery& getAllPendingUsers();
+    QSqlQuery& getAllPendingUsersCount();
+
+    QSqlQuery& getApproversOf(const int &id);
+
+    QSqlQuery& addApproval(const User&, const int& id);
+    QSqlQuery& approveUser(const User&);
 };
 
 #endif // DB_H

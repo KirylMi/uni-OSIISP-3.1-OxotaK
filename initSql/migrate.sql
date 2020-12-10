@@ -85,7 +85,8 @@ CREATE TABLE IF NOT EXISTS "oxotaK".drinks (
 -- SQLINES DEMO *** ------------------------------------
 CREATE TABLE IF NOT EXISTS "oxotaK".approval (
   new_user_id INT NOT NULL REFERENCES "oxotaK".users (id),
-  approval_id INT NOT NULL REFERENCES "oxotaK".users (id)
+  approval_id INT NOT NULL REFERENCES "oxotaK".users (id),
+  UNIQUE(new_user_id,approval_id)
 --  CONSTRAINT fk_approval_users1
 --    FOREIGN KEY (new_user_id)
 --    REFERENCES "oxotaK".users (id)

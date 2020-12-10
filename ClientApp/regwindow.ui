@@ -55,7 +55,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QTextEdit" name="textEdit">
+       <widget class="QTextEdit" name="username">
         <property name="minimumSize">
          <size>
           <width>200</width>
@@ -88,7 +88,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QTextEdit" name="textEdit_2">
+       <widget class="QTextEdit" name="password">
         <property name="minimumSize">
          <size>
           <width>200</width>
@@ -121,7 +121,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QTextEdit" name="textEdit_4">
+       <widget class="QTextEdit" name="name">
         <property name="minimumSize">
          <size>
           <width>200</width>
@@ -154,7 +154,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QTextEdit" name="textEdit_3">
+       <widget class="QTextEdit" name="description">
         <property name="minimumSize">
          <size>
           <width>200</width>

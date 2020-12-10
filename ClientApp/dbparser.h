@@ -25,12 +25,15 @@ private:
 
     DB *database;
 
+    void approveUser(const User&);
+
 signals:
     void successfulLogin(const User&);
     void badLogin(const QString&);
     void badNewData(const QString&);
     void badUpdateData(const QString&);
-    void dataChanged(QList<Drink>*);
+    void badRegData(const QString&);
+    void dataChanged(QList<Drink>*, QList<User>*);
 
 public slots:
     void tryLogIn(const User&);
@@ -44,7 +47,14 @@ public slots:
     Drink getDrink(int &id);
     QList<Drink>* getAllDrinks();
 
+    QList<User>* getPendingUsersForId(const int &id);
+    QList<User>* getAllPendingUsers();
+    int getAllPendingUsersCount();
+
     void regUser(const User &user);
+
+    void addApproval(const User&, const int &id);
+
 };
 
 #endif // DBPARSER_H

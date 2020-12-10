@@ -18,6 +18,7 @@ SOURCES += \
     mainwindow.cpp \
     models.cpp \
     regwindow.cpp \
+    user.cpp \
     utils.cpp \
     windowadd.cpp \
     windowedit.cpp
@@ -30,6 +31,7 @@ HEADERS += \
     mainwindow.h \
     models.h \
     regwindow.h \
+    user.h \
     utils.h \
     windowadd.h \
     windowedit.h

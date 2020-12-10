@@ -7,12 +7,14 @@ RegWindow::RegWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     //tbd
-    ui->textEdit->setTabChangesFocus(true);
-    ui->textEdit_2->setTabChangesFocus(true);
-    ui->textEdit_3->setTabChangesFocus(true);
-    setTabOrder(ui->textEdit,ui->textEdit_2);
-    setTabOrder(ui->textEdit_2,ui->textEdit_3);
-    setTabOrder(ui->textEdit_3,ui->buttonBox);
+    ui->username->setTabChangesFocus(true);
+    ui->password->setTabChangesFocus(true);
+    ui->name->setTabChangesFocus(true);
+    ui->description->setTabChangesFocus(true);
+    setTabOrder(ui->username,ui->password);
+    setTabOrder(ui->password,ui->name);
+    setTabOrder(ui->name,ui->description);
+    setTabOrder(ui->description,ui->buttonBox);
 
     connect(this,SIGNAL(badInput(const QString&)), this, SLOT(errorMsg(const QString&)));
 }
@@ -25,13 +27,21 @@ RegWindow::~RegWindow()
 void RegWindow::on_buttonBox_clicked(QAbstractButton *button)
 {
     if (button->text()=="&OK" || button->text()=="OK"){
-        if (ui->textEdit->toPlainText().isEmpty()
-                || ui->textEdit_2->toPlainText().isEmpty()
-                || ui->textEdit_3->toPlainText().isEmpty())
+        if (ui->username->toPlainText().isEmpty()
+                || ui->name->toPlainText().isEmpty()
+                || ui->password->toPlainText().isEmpty()
+                || ui->description->toPlainText().isEmpty())
         {
             emit badInput("Reg data is not filled.");
             return; //maybe not?
         }
+
+        User tempUser{0,ui->username->toPlainText(),
+                    ui->name->toPlainText(),
+                    ui->password->toPlainText(),
+                    true,
+                    ui->description->toPlainText()};
+        emit(pressedReg(tempUser));
 
 
 
