@@ -36,6 +36,8 @@ MainWindow::MainWindow(QWidget* parent)
     ui->pendingTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->pendingTable->setSelectionMode(QAbstractItemView::SingleSelection);
     ui->pendingTable->setModel(userModel);
+    ui->pendingTable->setColumnWidth(0,150);
+    ui->pendingTable->setColumnWidth(1,500);
 
     ui->pendingTable->horizontalHeader()->setVisible(true);
     ui->pendingTable->show();
@@ -79,7 +81,8 @@ void MainWindow::on_pushButton_3_clicked()
 
 void MainWindow::on_pushButton_2_clicked()
 {
-    refresh(DBParser::getInstance().getAllDrinks());
+    refresh(DBParser::getInstance().getAllDrinks(),
+            DBParser::getInstance().getPendingUsersForId(this->currentUser.id));
 }
 
 //Transfering data to windowEdit

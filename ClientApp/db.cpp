@@ -130,8 +130,9 @@ QSqlQuery &DB::getAllDrinks()
 QSqlQuery &DB::getPendingUsersForId(const int &id)
 {
     QSqlQuery *query = new QSqlQuery;
-    query->prepare("SELECT id,name,description "
+    query->prepare("(SELECT id,name,description "
                    "FROM " + getSchemaUsers() + " " +
+                   "WHERE is_active=0 AND id<>:id )" +
                    "EXCEPT "
                    "(SELECT id,name,description FROM "
                    + getSchemaUsers() + " AS users "
@@ -139,7 +140,7 @@ QSqlQuery &DB::getPendingUsersForId(const int &id)
                    + getSchemaApproval() + " AS approval "
                    "ON users.id=new_user_id "
                                            "AND approval.approval_id=:id "
-                                           "OR users.id=:id)");
+                                           "OR users.id=:id OR is_active=1)");
     query->bindValue(":id",id);
     query->exec();
     return *query;
@@ -186,6 +187,9 @@ QSqlQuery &DB::approveUser(const User &user)
 {
     QSqlQuery *query = new QSqlQuery;
     query->prepare("UPDATE " + getSchemaUsers() + " SET is_active=1 WHERE id=:id");
+    query->bindValue(":id",user.id);
+    query->exec();
+    query->prepare("DELETE FROM " + getSchemaApproval() + " WHERE new_user_id = :id");
     query->bindValue(":id",user.id);
     query->exec();
     return *query;

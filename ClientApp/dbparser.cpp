@@ -57,11 +57,26 @@ void DBParser::addApproval(const User &user, const int &id)
     QSqlQuery query = this->database->addApproval(user,id);
     query.next();
     //tbd check, if query failed, it means something really sad :(
-    int approversOfUserCount = this->database->getApproversOf(user.id).value(0).toInt();
-    int activeUsersCount = this->database->getAllActiveUsersCount().value(0).toInt();
+
+    query  = this->database->getApproversOf(user.id);
+
+    int approversOfUserCount = 0;
+    if(query.last())
+    {
+        approversOfUserCount =  query.at() + 1;
+        query.first();
+        query.previous();
+    }
+
+    query = this->database->getAllActiveUsersCount();
+    query.next();
+    int activeUsersCount = query.value(0).toInt();
+
+
     if (approversOfUserCount == activeUsersCount){
         approveUser(user);
     }
+    emit (dataChanged(nullptr,getPendingUsersForId(id)));
 }
 
 DBParser &DBParser::getInstance()
@@ -205,6 +220,7 @@ QList<User> *DBParser::getPendingUsersForId(const int &id)
     QSqlRecord record = query.record();
     QList<User> *result = new QList<User>;
     while (query.next()){
+        //might give a warning due to the SELECT query, which return only id,username and descript, but no actual problem here anyway.
         result->append({
                            query.value(record.indexOf("id")).toInt(),
                            query.value(record.indexOf("username")).toString(),
