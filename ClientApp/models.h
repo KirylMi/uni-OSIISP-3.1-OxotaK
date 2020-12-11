@@ -55,6 +55,7 @@ struct Drink{
     QString info;
     drinkType type;
     QPixmap photo;
+    bool operator < (const Drink &other) const;
 };
 
 #endif // MODELS_H

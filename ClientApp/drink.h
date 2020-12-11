@@ -4,6 +4,8 @@
 #include <QAbstractTableModel>
 #include <QList>
 #include "models.h"
+#include <QMap>
+#include <QPair>
 
 class DrinkModel : public QAbstractTableModel
 {
@@ -19,8 +21,10 @@ public:
     int columnCount(const QModelIndex &parent = QModelIndex()) const override;
 
     void clearAll();
+    void refresh(QMap<Drink,int> * = nullptr);
     void refresh(QList<Drink>* = nullptr);
-    QList<Drink> *drinks;
+    //QList<Drink> *drinks;
+    QMap<Drink,int> *drinksMarks;
 
 private:
 };

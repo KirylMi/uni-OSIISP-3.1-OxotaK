@@ -12,11 +12,17 @@ MainWindow::MainWindow(QWidget* parent)
 
     windowAdd = new WindowAdd();
     windowEdit = new WindowEdit();
+    windowMark = new WindowMark();
 
     connect(this->windowAdd,SIGNAL(addNewPressed(Drink&)),&DBParser::getInstance(),SLOT(addDrink(Drink&)));
     connect(this->windowEdit,SIGNAL(editPressed(Drink&)),&DBParser::getInstance(),SLOT(updateDrink(Drink&)));
+    connect(this->windowMark,SIGNAL(markPressed(Drink&,const QString&, const int&, const int&)),
+            &DBParser::getInstance(),SLOT(markDrink(Drink&,const QString&, const int&, const int&)));
+
     connect(&DBParser::getInstance(),SIGNAL(successfulLogin(const User&)),this,SLOT(authorize(const User&)));
     connect(&DBParser::getInstance(),SIGNAL(dataChanged(QList<Drink>*, QList<User>*)),this,SLOT(refresh(QList<Drink>*, QList<User>*)));
+    connect(&DBParser::getInstance(),SIGNAL(dataChanged(QMap<Drink,int>*, QList<User>*)),this,SLOT(refresh(QMap<Drink,int>*, QList<User>*)));
+    connect(&DBParser::getInstance(),SIGNAL(dataChanged(QList<User>*)),this,SLOT(refresh(QList<User>*)));
 
     drinkModel = new DrinkModel(this);
     userModel = new UserModel(this);
@@ -41,9 +47,6 @@ MainWindow::MainWindow(QWidget* parent)
 
     ui->pendingTable->horizontalHeader()->setVisible(true);
     ui->pendingTable->show();
-
-
-    //refresh();
 }
 
 MainWindow::~MainWindow()
@@ -57,19 +60,24 @@ void MainWindow::authorize(const User &user)
 
     this->show();
 
-    //qDebug()<<this->ui->mainTable->model()->data(ui->mainTable->model()->index(0,0));
-
-    //this->refresh();
-    //qDebug("OH YEAH MISTER CRABS");
     qDebug()<<currentUser;
-    refresh(DBParser::getInstance().getAllDrinks(),
+    refresh(DBParser::getInstance().getAllDrinksMarks(this->currentUser.id),
             DBParser::getInstance().getPendingUsersForId(this->currentUser.id));
-    //////////////////////////////////////////////////////////////////////////////////////TBD REFRESH DOESNT GIVE EXPECTED RESULT
+}
+
+void MainWindow::refresh(QMap<Drink, int> *drinksMarks, QList<User> *users)
+{
+    this->drinkModel->refresh(drinksMarks);
+    this->userModel->refresh(users);
+}
+
+void MainWindow::refresh(QList<User> *users)
+{
+    this->userModel->refresh(users);
 }
 
 void MainWindow::refresh(QList<Drink>* drinks, QList<User>* users)
 {
-    //this->drinkModel->clearAll();
     this->drinkModel->refresh(drinks);
     this->userModel->refresh(users);
 }
@@ -81,20 +89,21 @@ void MainWindow::on_pushButton_3_clicked()
 
 void MainWindow::on_pushButton_2_clicked()
 {
-    refresh(DBParser::getInstance().getAllDrinks(),
+    refresh(DBParser::getInstance().getAllDrinksMarks(this->currentUser.id),
             DBParser::getInstance().getPendingUsersForId(this->currentUser.id));
 }
 
 //Transfering data to windowEdit
 void MainWindow::on_pushButton_4_clicked()
-{
+{  //////////////////TBD NOTHING SELECTED?
     int selectedRow = ui->mainTable->selectionModel()->currentIndex().row();
     QString tempName = ui->mainTable->model()->index(selectedRow,0).data().toString();
     drinkType tempType = getDrinkTypeFromString(ui->mainTable->model()->index(selectedRow,1).data().toString());
     QString tempDescription = ui->mainTable->model()->index(selectedRow,2).data().toString();
     //MEGA CRUTCH
-    QPixmap photo = this->drinkModel->drinks->operator[](selectedRow).photo;
-    int tempId =this->drinkModel->drinks->operator[](selectedRow).id;
+    QPixmap photo = (this->drinkModel->drinksMarks->begin()+ selectedRow).key().photo;//  >begin() + index.row())drinks->operator[](selectedRow).photo;
+    int tempId =(this->drinkModel->drinksMarks->begin()+ selectedRow).key().id;
+    //int tempId =this->drinkModel->drinks->operator[](selectedRow).id;
     qDebug()<<"TEMP ID : "<<tempId;
     Drink chosenDrink(tempId,tempName,tempDescription,tempType,photo);
     windowEdit->getDrinkData(chosenDrink);
@@ -109,3 +118,18 @@ void MainWindow::on_buttonApprove_clicked()
     DBParser::getInstance().addApproval({tempId,username,"","",0,""}
                                         ,this->currentUser.id);
 }
+
+void MainWindow::on_buttonMark_clicked()
+{
+    /////////////////TBD NOTHING SELECTED
+    int selectedRow = ui->mainTable->selectionModel()->currentIndex().row();
+    QString tempName = ui->mainTable->model()->index(selectedRow,0).data().toString();
+    QPixmap photo = (this->drinkModel->drinksMarks->begin()+ selectedRow).key().photo;
+    int tempId = (this->drinkModel->drinksMarks->begin()+ selectedRow).key().id;
+    Drink chosenDrink(tempId,tempName,{},{},photo);
+    windowMark->getInitData(chosenDrink,this->currentUser.id);
+    windowMark->show();
+}
+
+
+//TBD MOVE GETTING DATA FROM MODEL TO ONE FUNCTION

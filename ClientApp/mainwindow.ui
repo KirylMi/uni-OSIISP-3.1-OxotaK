@@ -47,7 +47,7 @@
          </spacer>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton">
+         <widget class="QPushButton" name="buttonMark">
           <property name="text">
            <string>MARK</string>
           </property>

@@ -50,6 +50,7 @@ public slots:
     QSqlQuery& getUserData(const User&);
     QSqlQuery& addDrink(const Drink&, const int& drinkTypeId);
     QSqlQuery& updateDrink(const Drink&, const int& drinkTypeId);
+    QSqlQuery& rankDrink(const Drink&, const QString& comment, const int& mark, const int&userId);
 
     QSqlQuery& regUser(const User&);
 
@@ -59,6 +60,8 @@ public slots:
     QSqlQuery& getDrink(int &id);
     QSqlQuery& getDrink(QString &name);
     QSqlQuery& getAllDrinks();
+
+    QSqlQuery& getAllMarks(const int& userId);
 
     QSqlQuery& getPendingUsersForId(const int &id);
 

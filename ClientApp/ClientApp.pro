@@ -21,7 +21,8 @@ SOURCES += \
     user.cpp \
     utils.cpp \
     windowadd.cpp \
-    windowedit.cpp
+    windowedit.cpp \
+    windowmark.cpp
 
 HEADERS += \
     db.h \
@@ -34,14 +35,16 @@ HEADERS += \
     user.h \
     utils.h \
     windowadd.h \
-    windowedit.h
+    windowedit.h \
+    windowmark.h
 
 FORMS += \
     loginwindow.ui \
     mainwindow.ui \
     regwindow.ui \
     windowadd.ui \
-    windowedit.ui
+    windowedit.ui \
+    windowmark.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

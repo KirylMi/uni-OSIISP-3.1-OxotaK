@@ -7,6 +7,8 @@
 #include "db.h"
 #include "models.h"
 #include <QList>
+#include <QMap>
+#include <QPair>
 
 class DB;
 
@@ -34,18 +36,23 @@ signals:
     void badUpdateData(const QString&);
     void badRegData(const QString&);
     void dataChanged(QList<Drink>*, QList<User>*);
+    void dataChanged(QMap<Drink,int>*, QList<User>*);
+    //cratch? tbd
+    void dataChanged(QList<User>*);
 
 public slots:
     void tryLogIn(const User&);
 
     void addDrink(Drink&);
     void updateDrink(Drink&);
+    void rankDrink(Drink&, const QString& comment, const int &mark, const int&id);
 
     int getDrinkTypeId(const drinkType&);
 
     Drink getDrink(QString &name);
     Drink getDrink(int &id);
     QList<Drink>* getAllDrinks();
+    QMap<Drink,int>* getAllDrinksMarks(const int &id);
 
     QList<User>* getPendingUsersForId(const int &id);
     QList<User>* getAllPendingUsers();

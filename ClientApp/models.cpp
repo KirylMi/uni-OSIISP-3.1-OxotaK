@@ -29,3 +29,8 @@ drinkType getDrinkTypeFromString(QString str){
     if (str=="Vodka") return Vodka;
     return UNDEFINED;
 }
+
+bool Drink::operator <(const Drink &other) const
+{
+    return this->id<other.id;
+}

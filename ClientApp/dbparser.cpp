@@ -4,6 +4,7 @@
 #include <QFile>
 
 
+
 void DBParser::tryLogIn(const User &user){
 
     if (user.username.isEmpty() || user.password.isEmpty()){
@@ -76,7 +77,7 @@ void DBParser::addApproval(const User &user, const int &id)
     if (approversOfUserCount == activeUsersCount){
         approveUser(user);
     }
-    emit (dataChanged(nullptr,getPendingUsersForId(id)));
+    emit (dataChanged(getPendingUsersForId(id)));
 }
 
 DBParser &DBParser::getInstance()
@@ -156,6 +157,12 @@ void DBParser::updateDrink(Drink &obj)
     emit (dataChanged(getAllDrinks(),nullptr));
 }
 
+void DBParser::rankDrink(Drink &drink, const QString &comment, const int &mark, const int &id)
+{//check? tbd
+    QSqlQuery query = this->database->rankDrink(drink,comment,mark,id);
+    query.next();
+}
+
 int DBParser::getDrinkTypeId(const drinkType &drinkType)
 {
     QSqlQuery query = this->database->getDrinkTypeId(drinkType);
@@ -211,6 +218,34 @@ QList<Drink>* DBParser::getAllDrinks()
     }
 
     delete image;
+    return result;
+}
+
+QMap<Drink, int> *DBParser::getAllDrinksMarks(const int &userId)
+{
+    QList<Drink>* drinks= getAllDrinks();
+
+    QSqlQuery queryMarks = this->database->getAllMarks(userId);
+    QSqlRecord recordMarks = queryMarks.record();
+
+    QMap<int,int> tempMarksIDs;
+
+    QMap<Drink,int> *result = new QMap<Drink,int>;
+
+    while(queryMarks.next()){
+        tempMarksIDs[queryMarks.value(recordMarks.indexOf("drinks_id")).toInt()]=
+                               queryMarks.value(recordMarks.indexOf("mark")).toInt();
+    }
+    for (auto drink : *drinks){ //one of the ways, i've decided to make a copy with deletion instead of referensing and no deletion
+        auto val = tempMarksIDs.find(drink.id);
+        if (val!=tempMarksIDs.end()){
+            //does it make a copy here? If it does, & above should be added after all... tbd
+            result->insert(drink,val.value());
+        }
+        else{
+            result->insert(drink,0);
+        }
+    }
     return result;
 }
 
