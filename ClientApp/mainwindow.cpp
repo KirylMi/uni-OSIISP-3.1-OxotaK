@@ -17,7 +17,7 @@ MainWindow::MainWindow(QWidget* parent)
     connect(this->windowAdd,SIGNAL(addNewPressed(Drink&)),&DBParser::getInstance(),SLOT(addDrink(Drink&)));
     connect(this->windowEdit,SIGNAL(editPressed(Drink&)),&DBParser::getInstance(),SLOT(updateDrink(Drink&)));
     connect(this->windowMark,SIGNAL(markPressed(Drink&,const QString&, const int&, const int&)),
-            &DBParser::getInstance(),SLOT(markDrink(Drink&,const QString&, const int&, const int&)));
+            &DBParser::getInstance(),SLOT(rankDrink(Drink&,const QString&, const int&, const int&)));
 
     connect(&DBParser::getInstance(),SIGNAL(successfulLogin(const User&)),this,SLOT(authorize(const User&)));
     connect(&DBParser::getInstance(),SIGNAL(dataChanged(QList<Drink>*, QList<User>*)),this,SLOT(refresh(QList<Drink>*, QList<User>*)));

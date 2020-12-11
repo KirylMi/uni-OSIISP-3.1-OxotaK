@@ -130,7 +130,7 @@ QSqlQuery &DB::getAllDrinks()
 QSqlQuery &DB::getAllMarks(const int &userId)
 {
     QSqlQuery *query = new QSqlQuery;
-    query->prepare("SELECT drinks_id,mark FROM " + getSchemaReviews() + "WHERE users_id=:id");
+    query->prepare("SELECT drinks_id,mark FROM " + getSchemaReviews() + " WHERE users_id=:id");
     query->bindValue(":id",userId);
     query->exec();
     return *query;
@@ -259,10 +259,15 @@ QSqlQuery &DB::updateDrink(const Drink &drink, const int &drinkTypeId)
 QSqlQuery &DB::rankDrink(const Drink &drink, const QString &comment, const int &mark, const int &userId)
 {
     QSqlQuery *query = new QSqlQuery;
+//    query->prepare("INSERT INTO " + getSchemaReviews() + " VALUES("
+//                   ":users_id, :drinks_id, :comment, :mark) "
+//                   "ON DUPLICATE KEY UPDATE "
+//                   "comment=:comment,"
+//                   "mark=:mark");
     query->prepare("INSERT INTO " + getSchemaReviews() + " VALUES("
                    ":users_id, :drinks_id, :comment, :mark) "
-                   "ON DUPLICATE KEY UPDATE "
-                   "comment=:comment,"
+                   "ON CONFLICT(users_id,drinks_id) DO UPDATE "
+                   "SET comment=:comment,"
                    "mark=:mark");
     query->bindValue(":users_id",userId);
     query->bindValue(":comment",comment);
