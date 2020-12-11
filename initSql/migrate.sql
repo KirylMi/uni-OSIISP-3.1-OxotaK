@@ -106,8 +106,8 @@ CREATE TABLE IF NOT EXISTS "oxotaK".approval (
 CREATE TABLE IF NOT EXISTS "oxotaK".reviews (
   users_id INT NOT NULL REFERENCES "oxotaK".users (id),
   drinks_id INT NOT NULL REFERENCES "oxotaK".drinks (id),
-  comment VARCHAR(45) NOT NULL,
-  mark VARCHAR(45) NOT NULL,
+  comment TEXT NOT NULL,
+  mark INT NOT NULL,
   PRIMARY KEY (users_id, drinks_id)
 --  CONSTRAINT fk_users_has_drinks_users1
 --    FOREIGN KEY (users_id)
