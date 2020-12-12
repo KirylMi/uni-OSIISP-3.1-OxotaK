@@ -161,6 +161,7 @@ void DBParser::rankDrink(Drink &drink, const QString &comment, const int &mark, 
 {//check? tbd
     QSqlQuery query = this->database->rankDrink(drink,comment,mark,id);
     query.next();
+    emit dataChanged(getAllDrinksMarks(id),nullptr);
 }
 
 int DBParser::getDrinkTypeId(const drinkType &drinkType)

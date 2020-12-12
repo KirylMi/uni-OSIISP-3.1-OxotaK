@@ -26,15 +26,21 @@ void DrinkModel::refresh(QMap<Drink,int> *newList)
 
 void DrinkModel::refresh(QList<Drink> *newList)
 {
+    this->beginResetModel();
     QMap<Drink, int>* newMap = new QMap<Drink,int>;
     for (auto drink : *newList){
         /////auto it = std::find_if(drinksMarks->begin(),drinksMarks->end(),[&drink](QPair<Drink,int> val){ ?
         auto it = std::find_if(drinksMarks->keyBegin(),drinksMarks->keyEnd(),[&drink](Drink val){
             return val.id==drink.id;
         }); //id doesn't change, so. Though if multi users at the same time.... it might be a problem (fix -> end() check)
-        newMap->insert(drink,drinksMarks->operator[](*it));
+        if (it!=drinksMarks->keyEnd())
+            newMap->insert(drink,drinksMarks->operator[](*it));
+        else{
+                newMap->insert(drink,0);
+            }
     }
     this->drinksMarks->swap(*newMap);
+    this->endResetModel();
     //Delete newMap (which is oldMap now)?
 }
 
