@@ -48,9 +48,11 @@ signals:
 
 public slots:
     QSqlQuery& getUserData(const User&);
+
     QSqlQuery& addDrink(const Drink&, const int& drinkTypeId);
     QSqlQuery& updateDrink(const Drink&, const int& drinkTypeId);
     QSqlQuery& rankDrink(const Drink&, const QString& comment, const int& mark, const int&userId);
+    QSqlQuery& deleteDrink(const Drink&);
 
     QSqlQuery& regUser(const User&);
 

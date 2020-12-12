@@ -133,3 +133,11 @@ void MainWindow::on_buttonMark_clicked()
 
 
 //TBD MOVE GETTING DATA FROM MODEL TO ONE FUNCTION
+
+void MainWindow::on_buttonDelete_clicked()
+{
+    int selectedRow = ui->mainTable->selectionModel()->currentIndex().row();
+    int tempId = (this->drinkModel->drinksMarks->begin() + selectedRow).key().id;
+    Drink tempDrink(tempId,{},{},{},{});
+    DBParser::getInstance().deleteDrink(tempDrink);
+}

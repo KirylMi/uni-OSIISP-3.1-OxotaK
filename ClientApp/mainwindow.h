@@ -53,6 +53,8 @@ private slots:
 
     void on_buttonMark_clicked();
 
+    void on_buttonDelete_clicked();
+
 signals:
     void somethingWasPressed();
 

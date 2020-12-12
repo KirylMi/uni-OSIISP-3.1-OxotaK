@@ -164,6 +164,13 @@ void DBParser::rankDrink(Drink &drink, const QString &comment, const int &mark, 
     emit dataChanged(getAllDrinksMarks(id),nullptr);
 }
 
+void DBParser::deleteDrink(Drink &obj)
+{
+    QSqlQuery query = this->database->deleteDrink(obj);
+    query.next();
+    emit dataChanged(getAllDrinks(), nullptr);
+}
+
 int DBParser::getDrinkTypeId(const drinkType &drinkType)
 {
     QSqlQuery query = this->database->getDrinkTypeId(drinkType);

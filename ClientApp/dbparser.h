@@ -46,6 +46,7 @@ public slots:
     void addDrink(Drink&);
     void updateDrink(Drink&);
     void rankDrink(Drink&, const QString& comment, const int &mark, const int&id);
+    void deleteDrink(Drink&);
 
     int getDrinkTypeId(const drinkType&);
 

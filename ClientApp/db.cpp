@@ -259,11 +259,6 @@ QSqlQuery &DB::updateDrink(const Drink &drink, const int &drinkTypeId)
 QSqlQuery &DB::rankDrink(const Drink &drink, const QString &comment, const int &mark, const int &userId)
 {
     QSqlQuery *query = new QSqlQuery;
-//    query->prepare("INSERT INTO " + getSchemaReviews() + " VALUES("
-//                   ":users_id, :drinks_id, :comment, :mark) "
-//                   "ON DUPLICATE KEY UPDATE "
-//                   "comment=:comment,"
-//                   "mark=:mark");
     query->prepare("INSERT INTO " + getSchemaReviews() + " VALUES("
                    ":users_id, :drinks_id, :comment, :mark) "
                    "ON CONFLICT(users_id,drinks_id) DO UPDATE "
@@ -273,6 +268,17 @@ QSqlQuery &DB::rankDrink(const Drink &drink, const QString &comment, const int &
     query->bindValue(":comment",comment);
     query->bindValue(":mark",mark);
     query->bindValue(":drinks_id",drink.id);
+    query->exec();
+    return *query;
+}
+
+QSqlQuery &DB::deleteDrink(const Drink &obj)
+{
+    QSqlQuery *query = new QSqlQuery;
+    query->prepare("DELETE FROM " + getSchemaDrinks() + " "
+                   "WHERE "
+                   "id = :id");
+    query->bindValue(":id",obj.id);
     query->exec();
     return *query;
 }

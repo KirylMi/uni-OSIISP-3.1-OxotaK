@@ -105,7 +105,7 @@ CREATE TABLE IF NOT EXISTS "oxotaK".approval (
 -- SQLINES DEMO *** ------------------------------------
 CREATE TABLE IF NOT EXISTS "oxotaK".reviews (
   users_id INT NOT NULL REFERENCES "oxotaK".users (id),
-  drinks_id INT NOT NULL REFERENCES "oxotaK".drinks (id),
+  drinks_id INT NOT NULL REFERENCES "oxotaK".drinks (id) ON DELETE CASCADE,
   comment TEXT NOT NULL,
   mark INT NOT NULL,
   PRIMARY KEY (users_id, drinks_id)
