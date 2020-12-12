@@ -1,0 +1,5 @@
+    HostName        = "172.20.0.02"
+    DatabaseName    = "myDb"
+    UserName        = "postgres"
+    Password        = "YOURPASSWORDHERE"
+    Schema          = "oxotaK"

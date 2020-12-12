@@ -1,0 +1,46 @@
+.flex-container {
+    display: flex;
+    height: auto;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: space-between;
+    /*background-color: DodgerBlue;*/
+}
+
+.flex-container > div {
+    background-color: #f1f1f1;
+    width: 350px;
+    font-family: 'arial' !important;
+    /* scrolls */
+    overflow-y: scroll;
+    overflow-x: hidden;
+    /*heu*/
+    /* height:470px; Easy does it */
+    /* height:550px;  Fine without comments */
+    height:350px;
+    margin: 10px;
+    /* text-align: center; */
+    line-height: 75px;
+    font-size: 30px;
+}
+
+.flex-container > div > span{
+    text-align: left !important;
+}
+
+/* Somehow it doesn't trigger itself */
+.flex-container > img{
+    display:block;
+    margin:0 auto;
+}
+
+.comments{
+    text-align: left !important;
+    font-size:18px;
+    /* font-family: 'Helvetica' !important; */
+    line-height: 18px;
+}
+
+.centerised{
+    text-align:center!important;
+}
